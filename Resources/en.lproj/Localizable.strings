@@ -1,0 +1,247 @@
+/* Localizable.strings (English) */
+
+/* MARK: - App General */
+"app.name" = "Noty";
+"app.about.title" = "About Noty";
+"app.about.message" = "Sticky notes docked to the edge of your screen.\n\n⌥⌘N  new note      ⌥⌘A  all notes      ⌥⌘L  archive\nIn a note — Esc closes, ⌘F finds, ⌘. cycles colour, ⌘⌫ deletes.\n\nNotes are stored locally in an SQLite database; bodies are encrypted with AES-GCM. Your notes never leave this Mac — the only network request the app makes is the update check, which you can switch off.";
+
+/* MARK: - Menu Items */
+"menu.newNote" = "New Note";
+"menu.allNotes" = "All Notes";
+"menu.archive" = "Archive";
+"menu.settings" = "Settings…";
+"menu.quit" = "Quit Noty";
+"menu.hide" = "Hide Noty";
+"menu.about" = "About Noty";
+"menu.checkUpdates" = "Check for Updates…";
+"menu.import" = "Import…";
+"menu.biggerText" = "Bigger Text";
+"menu.smallerText" = "Smaller Text";
+"menu.edit" = "Edit";
+"menu.undo" = "Undo";
+"menu.redo" = "Redo";
+"menu.cut" = "Cut";
+"menu.copy" = "Copy";
+"menu.paste" = "Paste";
+"menu.selectAll" = "Select All";
+
+/* MARK: - Context Menu */
+"context.newNote" = "New Note";
+"context.allNotes" = "All Notes";
+"context.archive" = "Archive";
+"context.showOverFullScreen" = "Show over full-screen apps";
+"context.deckStyle" = "Deck style";
+"context.deckStyle.labelled" = "Labelled tabs";
+"context.deckStyle.colourChips" = "Colour chips";
+"context.noteFont" = "Note font";
+"context.textSize" = "Text size";
+"context.deckSize" = "Deck size";
+"context.keepDeckOpen" = "Keep deck open";
+"context.dockToLeft" = "Dock deck to left edge";
+"context.display" = "Display";
+"context.display.all" = "All Displays";
+"context.display.main" = "Main Display";
+"context.checkUpdates" = "Check for Updates…";
+"context.checkAutomatically" = "Check automatically";
+"context.launchAtLogin" = "Launch at login";
+"context.export" = "Export";
+"context.export.markdown" = "Markdown (one file per note)…";
+"context.export.plainText" = "Plain text (one file per note)…";
+"context.export.singleFile" = "Single document…";
+"context.export.stickies" = "Sticky archive (.stickies)…";
+"context.import" = "Import…";
+"context.settings" = "Settings…";
+"context.quit" = "Quit Noty";
+"context.pin" = "Pin";
+"context.unpin" = "Unpin";
+"context.delete" = "Delete";
+"context.cycleColor" = "Cycle colour  ⌘.";
+"context.close" = "Close";
+
+/* MARK: - Notes */
+"note.new" = "New note";
+"note.saved" = "Saved · %@";
+"note.notSaved" = "Not saved";
+"note.pin" = "Pin so it stays open  ⌘P";
+"note.unpin" = "Unpin — ⌘P";
+"note.welcome.title" = "Welcome to Noty";
+"note.welcome.body" = "Your notes live at the edge of the screen. Slide the pointer to the right edge and the deck fans out.\n\n⌥⌘N  new note\n⌥⌘A  all notes\n⌥⌘L  archive\n\nInside a note: Esc closes, ⌘F finds, ⌘. cycles the colour, ⌘⌫ deletes with ten seconds to undo.";
+"note.preview.empty" = "";
+"note.task.open" = "☐";
+"note.task.done" = "☑";
+"note.direction.automatic" = "Automatic";
+"note.direction.leftToRight" = "Left to Right";
+"note.direction.rightToLeft" = "Right to Left";
+"note.empty" = "Empty note";
+"note.cycleColor.help" = "Cycle colour · right-click to pick";
+"note.edited" = "Edited %@";
+
+/* MARK: - Colors */
+"color.lemon" = "Lemon";
+"color.peach" = "Peach";
+"color.rose" = "Rose";
+"color.lilac" = "Lilac";
+"color.sky" = "Sky";
+"color.mint" = "Mint";
+"color.sand" = "Sand";
+"color.slate" = "Slate";
+
+/* MARK: - Settings */
+"settings.title" = "Noty Settings";
+"settings.shortcuts" = "Shortcuts";
+"settings.shortcuts.caption" = "Click a field and press the keys; ⌫ clears one.";
+"settings.deck" = "Deck";
+"settings.deck.caption" = "How the notes sit on the screen edge.";
+"settings.notes" = "Notes";
+"settings.notes.caption" = "Type and formatting inside a note.";
+"settings.updates" = "Updates";
+"settings.updates.caption" = "Noty fetches one file to see whether a newer version exists.";
+"settings.language" = "Language";
+"settings.language.caption" = "Choose the display language for Noty.";
+"settings.language.description" = "Select the language you want to use for the Noty interface. The change will take effect after restarting the app.";
+"settings.language.restartHint" = "Note: Some changes may require restarting the app to take full effect.";
+"language.auto" = "Auto";
+
+/* Settings - Shortcuts */
+"shortcuts.newNote" = "New Note";
+"shortcuts.quickCapture" = "Quick Capture";
+"shortcuts.allNotes" = "All Notes";
+"shortcuts.archive" = "Archive";
+"shortcuts.archiveNote" = "Archive note";
+"shortcuts.close" = "Close";
+"shortcuts.delete" = "Delete";
+"shortcuts.find" = "Find";
+"shortcuts.task" = "Toggle task";
+"shortcuts.pin" = "Pin";
+"shortcuts.color" = "Cycle colour";
+"shortcuts.bigger" = "Bigger text";
+"shortcuts.smaller" = "Smaller text";
+"shortcuts.pressKeys" = "Press keys…";
+"shortcuts.global" = "From any app";
+"shortcuts.inNote" = "In an open note";
+"shortcuts.inNoteHint" = "In-note shortcuts only fire while a note is open, so a key with no modifier is fine there.";
+
+/* Settings - Deck */
+"deck.style" = "Style";
+"deck.style.labelled" = "Labelled tabs";
+"deck.style.colourChips" = "Colour chips";
+"deck.size" = "Size";
+"deck.size.hint" = "Scales the tabs, their labels, the chips and the resting pill together.";
+"deck.size.small" = "Small";
+"deck.size.default" = "Default";
+"deck.size.large" = "Large";
+"deck.size.extraLarge" = "Extra large";
+"deck.display" = "Display";
+"deck.display.all" = "All Displays";
+"deck.display.main" = "Main Display";
+"deck.edge" = "Edge";
+"deck.edge.left" = "Left";
+"deck.edge.right" = "Right";
+"deck.edgeWidth" = "Wake zone width";
+"deck.edgeWidth.hint" = "How far from the edge the pointer wakes the deck — %d pt.";
+"deck.edgeWidth.narrow" = "Narrow";
+"deck.edgeWidth.standard" = "Standard";
+"deck.edgeWidth.wide" = "Wide";
+"deck.edgeWidth.veryWide" = "Very wide";
+"deck.keepOpen" = "Keep deck open";
+"deck.keepOpen.hint" = "Tabs stay on the edge with their labels showing, instead of folding back into the pill when the pointer leaves.";
+"deck.showOverFullScreen" = "Show over full-screen apps";
+"deck.tabPreview" = "Show preview on hover";
+"deck.tabPreview.hint" = "Hover over a tab to peek at its contents without opening it.";
+"deck.openOnHover" = "Open a note by hovering its tab";
+"deck.openOnHover.hint" = "Rest on a tab and it opens, no click needed. Off by default.";
+"deck.dragHint" = "Hold ⌥ Option and drag the pill to move it to any screen, edge, or height.";
+
+/* Settings - Notes */
+"notes.font" = "Font";
+"notes.fontSize" = "Text size";
+"notes.noteSize" = "Note size";
+"notes.markdown" = "Style Markdown as you type";
+"notes.markdown.hint" = "**bold**, *italic*, `code`, ~~struck~~, # headings, > quotes and [links](url), which ⌘-click opens. The text stays plain — only its appearance changes.";
+
+/* Settings - Updates */
+"updates.version" = "This copy";
+"updates.lastChecked" = "Last checked %@";
+"updates.checkNow" = "Check Now";
+"updates.automatic" = "Check for updates automatically";
+"updates.status.checking" = "Checking…";
+"updates.status.upToDate" = "Up to date";
+"updates.status.available" = "Version %@ available";
+"updates.status.error" = "Check failed";
+"updates.noSparkle" = "Run ./scripts/fetch-sparkle.sh and rebuild to add the updater.";
+"updates.noCheckYet" = "No check yet.";
+"updates.networkHint" = "Fetching appcast.xml is the only network request Noty ever makes — no accounts, no analytics, and nothing about a note leaves the Mac. Every update is checked against the EdDSA public key in the app; one signed by any other key is refused.";
+
+/* MARK: - Library Window */
+"library.allNotes" = "All Notes";
+"library.archive" = "Archive";
+"library.search" = "Search";
+"library.noNotes" = "No notes yet";
+"library.noArchived" = "Nothing archived";
+"library.noMatches" = "No matches";
+"library.search.placeholder" = "Search all notes";
+"library.selectNote" = "Select a note";
+"library.restore" = "Restore";
+"library.delete" = "Delete";
+"library.export" = "Export";
+
+/* MARK: - Export/Import */
+"export.success" = "Exported %d notes";
+"export.failed" = "Export failed";
+"export.incomplete" = "Export incomplete";
+"export.incomplete.detail" = "Wrote %d of %d notes. See Console for details.";
+"export.nothing" = "Nothing to export";
+"export.nothing.detail" = "There are no notes yet.";
+"export.selectFolder" = "Select folder";
+"export.markdown" = "Markdown";
+"export.plainText" = "Plain Text";
+"export.singleFile" = "Single Document";
+"export.stickies" = "Sticky Archive";
+
+"import.success" = "Imported %d notes";
+"import.failed" = "Import failed";
+"import.complete" = "Import complete";
+"import.complete.detail" = "Added %d note(s).";
+"import.partial" = "Import finished with problems";
+"import.partial.detail" = "Added %d note(s). Could not read: %@";
+"import.selectFile" = "Select file";
+"import.stickies" = "Sticky Archive";
+"import.markdown" = "Markdown";
+"import.plainText" = "Plain Text";
+
+/* MARK: - Quick Capture */
+"quickCapture.title" = "Quick note";
+"quickCapture.placeholder" = "Type a note…";
+"quickCapture.newline" = "⇧↩ for new line";
+"quickCapture.esc" = "Esc to cancel";
+
+/* MARK: - Undo Toast */
+"undo.deleted" = "Note deleted";
+"undo.button" = "Undo";
+"undo.timeout" = "10 seconds to undo";
+
+/* MARK: - Find Bar */
+"find.placeholder" = "Find in note";
+"find.next" = "Next";
+"find.previous" = "Previous";
+"find.done" = "Done";
+
+/* MARK: - Errors */
+"error.database" = "Database error";
+"error.encryption" = "Encryption error";
+"error.fileRead" = "Could not read file";
+"error.fileWrite" = "Could not write file";
+"error.import" = "Import error";
+"error.export" = "Export error";
+
+/* MARK: - Time */
+"time.justNow" = "just now";
+"time.minutesAgo" = "%d minutes ago";
+"time.hoursAgo" = "%d hours ago";
+"time.daysAgo" = "%d days ago";
+"time.weeksAgo" = "%d weeks ago";
+
+/* MARK: - Deck Labels */
+"deck.more" = "+%d more";
+"deck.add" = "+";
+"deck.tasks.done" = "%d/%d";

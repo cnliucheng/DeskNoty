@@ -271,6 +271,46 @@ a framework whose Team ID differs from the process — so `build.sh` re-signs th
 framework (innermost bundle first) with the same identity as the app. Set
 `CODESIGN_IDENTITY` to use a Developer ID instead of an ad-hoc signature.
 
+## Localization / 本地化
+
+Noty supports **English** and **Simplified Chinese** out of the box. The app automatically detects your system language, or you can switch manually:
+
+**Right-click the pill → Settings → Language**
+
+| Option | Description |
+|---|---|
+| **Auto** | Follows your macOS system language |
+| **English** | Force English UI |
+| **简体中文** | Force Simplified Chinese UI |
+
+### Adding a new language
+
+1. Create a new `.lproj` directory under `Resources/` (e.g., `ja.lproj`)
+2. Copy `Resources/en.lproj/Localizable.strings` into it
+3. Translate all 246 strings
+4. Add the new language to `Sources/Localization.swift`
+5. Add a picker option in `Sources/SettingsWindow.swift`
+
+---
+
+Noty 支持**英文**和**简体中文**。应用会自动检测系统语言，也可以手动切换：
+
+**右键点击药丸 → 设置 → 语言**
+
+| 选项 | 说明 |
+|---|---|
+| **自动** | 跟随 macOS 系统语言 |
+| **English** | 强制英文界面 |
+| **简体中文** | 强制简体中文界面 |
+
+### 添加新语言
+
+1. 在 `Resources/` 下创建新的 `.lproj` 目录（如 `ja.lproj`）
+2. 复制 `Resources/en.lproj/Localizable.strings` 到新目录
+3. 翻译全部 246 个字符串
+4. 在 `Sources/Localization.swift` 中添加新语言支持
+5. 在 `Sources/SettingsWindow.swift` 中添加语言选项
+
 ## Layout
 
 ```
@@ -289,6 +329,7 @@ Sources/
   LibraryWindow.swift   All Notes / Archive
   ExportImport.swift    md / txt / single file / .stickies
   UndoToast.swift       the ten-second undo after a delete
+  Localization.swift    Bilingual (EN/ZH) support
 ```
 
 Four details worth knowing if you touch the deck:

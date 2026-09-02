@@ -632,7 +632,7 @@ struct NotePreviewCard: View {
                         }
                     }
                 } else if note.body.isEmpty || lines.count <= 1 {
-                    Text("Empty note")
+                    Text(L10n.string("note.empty"))
                         .font(.system(size: 10).italic())
                         .foregroundStyle(note.palette.ink.opacity(0.45))
                 }
@@ -757,11 +757,11 @@ struct CogButton: View {
 extension View {
     func noteContextMenu(_ note: Note) -> some View {
         contextMenu {
-            Button(note.pinned ? "Unpin" : "Pin") { NoteStore.shared.togglePin(id: note.id) }
-            Button("Archive") { NoteStore.shared.setArchived(id: note.id, true) }
-            Button("Cycle colour  ⌘.") { NoteStore.shared.cycleColor(id: note.id) }
+            Button(note.pinned ? L10n.string("context.unpin") : L10n.string("context.pin")) { NoteStore.shared.togglePin(id: note.id) }
+            Button(L10n.string("context.archive")) { NoteStore.shared.setArchived(id: note.id, true) }
+            Button(L10n.string("context.cycleColor")) { NoteStore.shared.cycleColor(id: note.id) }
             Divider()
-            Button("Delete") { NoteStore.shared.delete(id: note.id) }
+            Button(L10n.string("context.delete")) { NoteStore.shared.delete(id: note.id) }
         }
     }
 }

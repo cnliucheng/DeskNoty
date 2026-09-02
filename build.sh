@@ -46,6 +46,13 @@ cp "$ROOT/Info.plist" "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $MARKETING_VERSION" "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" "$APP/Contents/Info.plist"
 [ -f "$ROOT/Resources/AppIcon.icns" ] && cp "$ROOT/Resources/AppIcon.icns" "$APP/Contents/Resources/"
+# Copy localization files
+for lang in en zh-Hans; do
+    if [ -d "$ROOT/Resources/$lang.lproj" ]; then
+        mkdir -p "$APP/Contents/Resources/$lang.lproj"
+        cp "$ROOT/Resources/$lang.lproj/"* "$APP/Contents/Resources/$lang.lproj/"
+    fi
+done
 # Sparkle is MIT; redistributing its framework means shipping its notice too.
 [ -f "$ROOT/LICENSE" ] && cp "$ROOT/LICENSE" "$APP/Contents/Resources/LICENSE.txt"
 [ -f "$ROOT/licenses/THIRD-PARTY.txt" ] && cp "$ROOT/licenses/THIRD-PARTY.txt" "$APP/Contents/Resources/"

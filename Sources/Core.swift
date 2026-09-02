@@ -277,7 +277,7 @@ struct Note: Identifiable, Hashable {
         return clean.count > 60 ? String(clean.prefix(60)) + "…" : clean
     }
 
-    var displayTitle: String { title.isEmpty ? "New note" : title }
+    var displayTitle: String { title.isEmpty ? L10n.string("note.new") : title }
 
     /// Completed / total, or nil when the note holds no tasks.
     var taskProgress: (done: Int, total: Int)? {

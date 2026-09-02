@@ -113,7 +113,7 @@ struct LibraryView: View {
             HStack(spacing: 6) {
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 11)).foregroundStyle(.secondary)
-                TextField("Search all notes", text: $model.query)
+                TextField(L10n.string("library.search.placeholder"), text: $model.query)
                     .textFieldStyle(.plain)
                     .font(.system(size: 12))
                 if !model.query.isEmpty {
@@ -133,8 +133,8 @@ struct LibraryView: View {
                     Image(systemName: model.mode == .all ? "note.text" : "archivebox")
                         .font(.system(size: 22)).foregroundStyle(.quaternary)
                     Text(model.query.isEmpty
-                         ? (model.mode == .all ? "No notes yet" : "Nothing archived")
-                         : "No matches")
+                         ? (model.mode == .all ? L10n.string("library.noNotes") : L10n.string("library.noArchived"))
+                         : L10n.string("library.noMatches"))
                         .font(.system(size: 12)).foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -216,12 +216,12 @@ struct LibraryView: View {
         .padding(.vertical, 3)
         .contextMenu {
             if note.archived {
-                Button("Restore") { NoteStore.shared.setArchived(id: note.id, false) }
+                Button(L10n.string("library.restore")) { NoteStore.shared.setArchived(id: note.id, false) }
             } else {
-                Button("Archive") { NoteStore.shared.setArchived(id: note.id, true) }
+                Button(L10n.string("library.archive")) { NoteStore.shared.setArchived(id: note.id, true) }
             }
             Divider()
-            Button("Delete") { NoteStore.shared.delete(id: note.id) }
+            Button(L10n.string("library.delete")) { NoteStore.shared.delete(id: note.id) }
         }
     }
 
@@ -235,7 +235,7 @@ struct LibraryView: View {
         } else {
             VStack(spacing: 8) {
                 Image(systemName: "sidebar.right").font(.system(size: 26)).foregroundStyle(.quaternary)
-                Text("Select a note").font(.system(size: 13)).foregroundStyle(.secondary)
+                Text(L10n.string("library.selectNote")).font(.system(size: 13)).foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(nsColor: .textBackgroundColor))
@@ -262,7 +262,7 @@ struct LibraryDetail: View {
                         .padding(3).contentShape(Circle())
                 }
                 .buttonStyle(.plain)
-                .help("Cycle colour · right-click to pick")
+                .help(L10n.string("note.cycleColor.help"))
                 .contextMenu {
                     ForEach(Array(NoteColor.all.enumerated()), id: \.offset) { idx, c in
                         Button(idx == note.color ? "✓ \(c.name)" : c.name) {
@@ -274,7 +274,7 @@ struct LibraryDetail: View {
                 Text(note.displayTitle)
                     .font(.system(size: 13, weight: .semibold)).lineLimit(1)
                 Spacer()
-                Text("Edited \(Fmt.ago(note.modified))")
+                Text(L10n.string("note.edited", Fmt.ago(note.modified)))
                     .font(.system(size: 10.5)).foregroundStyle(.secondary)
 
                 NoteTextDirectionMenu(direction: note.textDirection,
@@ -283,10 +283,10 @@ struct LibraryDetail: View {
                 }
 
                 if note.archived {
-                    Button("Restore") { NoteStore.shared.setArchived(id: note.id, false) }
+                    Button(L10n.string("library.restore")) { NoteStore.shared.setArchived(id: note.id, false) }
                         .controlSize(.small)
                 } else {
-                    Button("Archive") { NoteStore.shared.setArchived(id: note.id, true) }
+                    Button(L10n.string("library.archive")) { NoteStore.shared.setArchived(id: note.id, true) }
                         .controlSize(.small)
                 }
                 Button {

@@ -1,0 +1,247 @@
+/* Localizable.strings (Simplified Chinese) */
+
+/* MARK: - App General */
+"app.name" = "Noty";
+"app.about.title" = "关于 Noty";
+"app.about.message" = "停靠在屏幕边缘的便签。\n\n⌥⌘N  新建便签      ⌥⌘A  所有便签      ⌥⌘L  归档\n在便签中 — Esc 关闭，⌘F 查找，⌘. 切换颜色，⌘⌫ 删除。\n\n便签存储在本地 SQLite 数据库中；内容使用 AES-GCM 加密。您的便签永远不会离开此 Mac — 应用程序发出的唯一网络请求是更新检查，您可以关闭它。";
+
+/* MARK: - Menu Items */
+"menu.newNote" = "新建便签";
+"menu.allNotes" = "所有便签";
+"menu.archive" = "归档";
+"menu.settings" = "设置…";
+"menu.quit" = "退出 Noty";
+"menu.hide" = "隐藏 Noty";
+"menu.about" = "关于 Noty";
+"menu.checkUpdates" = "检查更新…";
+"menu.import" = "导入…";
+"menu.biggerText" = "放大文字";
+"menu.smallerText" = "缩小文字";
+"menu.edit" = "编辑";
+"menu.undo" = "撤销";
+"menu.redo" = "重做";
+"menu.cut" = "剪切";
+"menu.copy" = "拷贝";
+"menu.paste" = "粘贴";
+"menu.selectAll" = "全选";
+
+/* MARK: - Context Menu */
+"context.newNote" = "新建便签";
+"context.allNotes" = "所有便签";
+"context.archive" = "归档";
+"context.showOverFullScreen" = "在全屏应用上方显示";
+"context.deckStyle" = "卡片组样式";
+"context.deckStyle.labelled" = "带标签的标签页";
+"context.deckStyle.colourChips" = "色块";
+"context.noteFont" = "便签字体";
+"context.textSize" = "文字大小";
+"context.deckSize" = "卡片组大小";
+"context.keepDeckOpen" = "保持卡片组打开";
+"context.dockToLeft" = "停靠到左边缘";
+"context.display" = "显示器";
+"context.display.all" = "所有显示器";
+"context.display.main" = "主显示器";
+"context.checkUpdates" = "检查更新…";
+"context.checkAutomatically" = "自动检查";
+"context.launchAtLogin" = "登录时启动";
+"context.export" = "导出";
+"context.export.markdown" = "Markdown（每个便签一个文件）…";
+"context.export.plainText" = "纯文本（每个便签一个文件）…";
+"context.export.singleFile" = "单个文档…";
+"context.export.stickies" = "便签存档（.stickies）…";
+"context.import" = "导入…";
+"context.settings" = "设置…";
+"context.quit" = "退出 Noty";
+"context.pin" = "固定";
+"context.unpin" = "取消固定";
+"context.delete" = "删除";
+"context.cycleColor" = "切换颜色  ⌘.";
+"context.close" = "关闭";
+
+/* MARK: - Notes */
+"note.new" = "新便签";
+"note.saved" = "已保存 · %@";
+"note.notSaved" = "未保存";
+"note.pin" = "固定以便保持打开  ⌘P";
+"note.unpin" = "取消固定 — ⌘P";
+"note.welcome.title" = "欢迎使用 Noty";
+"note.welcome.body" = "您的便签停靠在屏幕边缘。将指针滑到右边缘，卡片组就会展开。\n\n⌥⌘N  新建便签\n⌥⌘A  所有便签\n⌥⌘L  归档\n\n在便签中：Esc 关闭，⌘F 查找，⌘. 切换颜色，⌘⌫ 删除（10秒内可撤销）。";
+"note.preview.empty" = "";
+"note.task.open" = "☐";
+"note.task.done" = "☑";
+"note.direction.automatic" = "自动";
+"note.direction.leftToRight" = "从左到右";
+"note.direction.rightToLeft" = "从右到左";
+"note.empty" = "空便签";
+"note.cycleColor.help" = "切换颜色 · 右键点击选择";
+"note.edited" = "编辑于 %@";
+
+/* MARK: - Colors */
+"color.lemon" = "柠檬黄";
+"color.peach" = "蜜桃色";
+"color.rose" = "玫瑰红";
+"color.lilac" = "丁香紫";
+"color.sky" = "天空蓝";
+"color.mint" = "薄荷绿";
+"color.sand" = "沙色";
+"color.slate" = "石板灰";
+
+/* MARK: - Settings */
+"settings.title" = "Noty 设置";
+"settings.shortcuts" = "快捷键";
+"settings.shortcuts.caption" = "点击一个字段并按下按键；⌫ 清除一个。";
+"settings.deck" = "卡片组";
+"settings.deck.caption" = "便签如何停靠在屏幕边缘。";
+"settings.notes" = "便签";
+"settings.notes.caption" = "便签内的文字和格式。";
+"settings.updates" = "更新";
+"settings.updates.caption" = "Noty 获取一个文件以检查是否存在更新版本。";
+"settings.language" = "语言";
+"settings.language.caption" = "选择 Noty 的显示语言。";
+"settings.language.description" = "选择您想要使用的 Noty 界面语言。更改将在重启应用后生效。";
+"settings.language.restartHint" = "注意：某些更改可能需要重启应用才能完全生效。";
+"language.auto" = "自动";
+
+/* Settings - Shortcuts */
+"shortcuts.newNote" = "新建便签";
+"shortcuts.quickCapture" = "快速捕获";
+"shortcuts.allNotes" = "所有便签";
+"shortcuts.archive" = "归档";
+"shortcuts.archiveNote" = "归档便签";
+"shortcuts.close" = "关闭";
+"shortcuts.delete" = "删除";
+"shortcuts.find" = "查找";
+"shortcuts.task" = "切换任务";
+"shortcuts.pin" = "固定";
+"shortcuts.color" = "切换颜色";
+"shortcuts.bigger" = "放大文字";
+"shortcuts.smaller" = "缩小文字";
+"shortcuts.pressKeys" = "按下按键…";
+"shortcuts.global" = "在任何应用中";
+"shortcuts.inNote" = "在打开的便签中";
+"shortcuts.inNoteHint" = "便签内快捷键仅在便签打开时触发，因此没有修饰键的按键是可以的。";
+
+/* Settings - Deck */
+"deck.style" = "样式";
+"deck.style.labelled" = "带标签的标签页";
+"deck.style.colourChips" = "色块";
+"deck.size" = "大小";
+"deck.size.hint" = "同时缩放标签页、标签、色块和静止药丸。";
+"deck.size.small" = "小";
+"deck.size.default" = "默认";
+"deck.size.large" = "大";
+"deck.size.extraLarge" = "特大";
+"deck.display" = "显示器";
+"deck.display.all" = "所有显示器";
+"deck.display.main" = "主显示器";
+"deck.edge" = "边缘";
+"deck.edge.left" = "左侧";
+"deck.edge.right" = "右侧";
+"deck.edgeWidth" = "唤醒区域宽度";
+"deck.edgeWidth.hint" = "指针唤醒卡片组的距离边缘 — %d pt。";
+"deck.edgeWidth.narrow" = "窄";
+"deck.edgeWidth.standard" = "标准";
+"deck.edgeWidth.wide" = "宽";
+"deck.edgeWidth.veryWide" = "非常宽";
+"deck.keepOpen" = "保持卡片组打开";
+"deck.keepOpen.hint" = "标签页保持在边缘并显示标签，而不是在指针离开时折叠回药丸。";
+"deck.showOverFullScreen" = "在全屏应用上方显示";
+"deck.tabPreview" = "悬停时显示预览";
+"deck.tabPreview.hint" = "悬停在标签页上可以查看其内容而无需打开。";
+"deck.openOnHover" = "悬停标签页时打开便签";
+"deck.openOnHover.hint" = "停留在标签页上就会打开，无需点击。默认关闭。";
+"deck.dragHint" = "按住 ⌥ Option 并拖动药丸将其移动到任何屏幕、边缘或高度。";
+
+/* Settings - Notes */
+"notes.font" = "字体";
+"notes.fontSize" = "文字大小";
+"notes.noteSize" = "便签大小";
+"notes.markdown" = "输入时设置 Markdown 样式";
+"notes.markdown.hint" = "**粗体**, *斜体*, `代码`, ~~删除线~~, # 标题, > 引用和 [链接](url)，⌘-点击打开。文本保持纯文本——只有外观改变。";
+
+/* Settings - Updates */
+"updates.version" = "此副本";
+"updates.lastChecked" = "上次检查：%@";
+"updates.checkNow" = "立即检查";
+"updates.automatic" = "自动检查更新";
+"updates.status.checking" = "检查中…";
+"updates.status.upToDate" = "已是最新版本";
+"updates.status.available" = "版本 %@ 可用";
+"updates.status.error" = "检查失败";
+"updates.noSparkle" = "运行 ./scripts/fetch-sparkle.sh 并重新构建以添加更新器。";
+"updates.noCheckYet" = "尚未检查。";
+"updates.networkHint" = "获取 appcast.xml 是 Noty 发出的唯一网络请求——没有账户、没有分析，也没有关于便签的信息离开 Mac。每次更新都会根据应用中的 EdDSA 公钥进行检查；任何其他密钥签名的更新都会被拒绝。";
+
+/* MARK: - Library Window */
+"library.allNotes" = "所有便签";
+"library.archive" = "归档";
+"library.search" = "搜索";
+"library.noNotes" = "暂无便签";
+"library.noArchived" = "暂无归档便签";
+"library.noMatches" = "没有匹配项";
+"library.search.placeholder" = "搜索所有便签";
+"library.selectNote" = "选择一个便签";
+"library.restore" = "恢复";
+"library.delete" = "删除";
+"library.export" = "导出";
+
+/* MARK: - Export/Import */
+"export.success" = "已导出 %d 个便签";
+"export.failed" = "导出失败";
+"export.incomplete" = "导出不完整";
+"export.incomplete.detail" = "已写入 %d 个便签中的 %d 个。请查看控制台了解详情。";
+"export.nothing" = "没有可导出的内容";
+"export.nothing.detail" = "暂无便签。";
+"export.selectFolder" = "选择文件夹";
+"export.markdown" = "Markdown";
+"export.plainText" = "纯文本";
+"export.singleFile" = "单个文档";
+"export.stickies" = "便签存档";
+
+"import.success" = "已导入 %d 个便签";
+"import.failed" = "导入失败";
+"import.complete" = "导入完成";
+"import.complete.detail" = "已添加 %d 个便签。";
+"import.partial" = "导入完成但有问题";
+"import.partial.detail" = "已添加 %d 个便签。无法读取：%@";
+"import.selectFile" = "选择文件";
+"import.stickies" = "便签存档";
+"import.markdown" = "Markdown";
+"import.plainText" = "纯文本";
+
+/* MARK: - Quick Capture */
+"quickCapture.title" = "快速便签";
+"quickCapture.placeholder" = "输入便签内容…";
+"quickCapture.newline" = "⇧↩ 换行";
+"quickCapture.esc" = "Esc 取消";
+
+/* MARK: - Undo Toast */
+"undo.deleted" = "便签已删除";
+"undo.button" = "撤销";
+"undo.timeout" = "10秒内可撤销";
+
+/* MARK: - Find Bar */
+"find.placeholder" = "在便签中查找";
+"find.next" = "下一个";
+"find.previous" = "上一个";
+"find.done" = "完成";
+
+/* MARK: - Errors */
+"error.database" = "数据库错误";
+"error.encryption" = "加密错误";
+"error.fileRead" = "无法读取文件";
+"error.fileWrite" = "无法写入文件";
+"error.import" = "导入错误";
+"error.export" = "导出错误";
+
+/* MARK: - Time */
+"time.justNow" = "刚刚";
+"time.minutesAgo" = "%d 分钟前";
+"time.hoursAgo" = "%d 小时前";
+"time.daysAgo" = "%d 天前";
+"time.weeksAgo" = "%d 周前";
+
+/* MARK: - Deck Labels */
+"deck.more" = "+%d 更多";
+"deck.add" = "+";
+"deck.tasks.done" = "%d/%d";

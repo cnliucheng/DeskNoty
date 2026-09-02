@@ -46,7 +46,7 @@ enum Transfer {
 
     static func export(_ format: Format, notes: [Note]) {
         guard !notes.isEmpty else {
-            alert("Nothing to export", "There are no notes yet.")
+            alert(L10n.string("export.nothing"), L10n.string("export.nothing.detail"))
             return
         }
         NSApp.activate()
@@ -87,7 +87,7 @@ enum Transfer {
         }
         reveal(dir)
         if written < notes.count {
-            alert("Export incomplete", "Wrote \(written) of \(notes.count) notes. See Console for details.")
+            alert(L10n.string("export.incomplete"), L10n.string("export.incomplete.detail", written, notes.count))
         }
     }
 
@@ -126,7 +126,7 @@ enum Transfer {
             try enc.encode(archive).write(to: url, options: .atomic)
             reveal(url)
         } catch {
-            alert("Export failed", error.localizedDescription)
+            alert(L10n.string("export.failed"), error.localizedDescription)
         }
     }
 
@@ -184,10 +184,10 @@ enum Transfer {
 
         let added = NoteStore.shared.ingest(incoming)
         if failed.isEmpty {
-            alert("Import complete", "Added \(added) note\(added == 1 ? "" : "s").")
+            alert(L10n.string("import.complete"), L10n.string("import.complete.detail", added))
         } else {
-            alert("Import finished with problems",
-                  "Added \(added) note\(added == 1 ? "" : "s"). Could not read: \(failed.joined(separator: ", "))")
+            alert(L10n.string("import.partial"),
+                  L10n.string("import.partial.detail", added, failed.joined(separator: ", ")))  
         }
     }
 

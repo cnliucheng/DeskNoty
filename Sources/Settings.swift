@@ -145,7 +145,7 @@ enum Settings {
     /// How far from the screen edge the deck notices the pointer. A wider strip
     /// is easier to hit; a narrower one stays further out of the way.
     static let edgeWidths: [(name: String, width: Double)] = [
-        ("Narrow", 8), ("Standard", 14), ("Wide", 28), ("Very wide", 44)
+        (L10n.string("deck.edgeWidth.narrow"), 8), (L10n.string("deck.edgeWidth.standard"), 14), (L10n.string("deck.edgeWidth.wide"), 28), (L10n.string("deck.edgeWidth.veryWide"), 44)
     ]
 
     static var edgeWidth: Double {
@@ -236,7 +236,7 @@ enum Settings {
     static let deckScaleRange: ClosedRange<Double> = 0.7...1.8
 
     static let deckSizes: [(name: String, scale: Double)] = [
-        ("Small", 0.85), ("Default", 1.0), ("Large", 1.25), ("Extra large", 1.5)
+        (L10n.string("deck.size.small"), 0.85), (L10n.string("deck.size.default"), 1.0), (L10n.string("deck.size.large"), 1.25), (L10n.string("deck.size.extraLarge"), 1.5)
     ]
 
     /// Memoized: DeckGeom routes every metric through this, and SwiftUI reads
@@ -274,6 +274,29 @@ enum Settings {
                 else { try SMAppService.mainApp.unregister() }
             } catch {
                 NSLog("Noty: launch-at-login toggle failed — \(error.localizedDescription)")
+            }
+        }
+    }
+
+    // MARK: - Language
+
+    static var language: String {
+        get { d.string(forKey: "language") ?? "auto" }
+        set {
+            d.set(newValue, forKey: "language")
+            switch newValue {
+            case "en":
+                L10n.setLanguage(.english)
+            case "zh-Hans":
+                L10n.setLanguage(.chinese)
+            default:
+                // Auto: use system language
+                let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+                if preferredLanguage.hasPrefix("zh") {
+                    L10n.setLanguage(.chinese)
+                } else {
+                    L10n.setLanguage(.english)
+                }
             }
         }
     }
