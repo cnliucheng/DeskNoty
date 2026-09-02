@@ -181,9 +181,15 @@
 "library.noMatches" = "No matches";
 "library.search.placeholder" = "Search all notes";
 "library.selectNote" = "Select a note";
+"library.newNote" = "New Note";
+"library.export" = "Export";
+"library.export.markdown" = "Markdown — one file per note…";
+"library.export.plainText" = "Plain text — one file per note…";
+"library.export.singleFile" = "Single document…";
+"library.export.stickies" = "Sticky archive (.stickies)…";
+"library.import" = "Import…";
 "library.restore" = "Restore";
 "library.delete" = "Delete";
-"library.export" = "Export";
 
 /* MARK: - Export/Import */
 "export.success" = "Exported %d notes";

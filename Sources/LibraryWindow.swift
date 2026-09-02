@@ -3,9 +3,15 @@ import SwiftUI
 import Combine
 
 enum LibraryMode: String, CaseIterable, Identifiable {
-    case all = "All Notes"
-    case archive = "Archive"
+    case all = "all"
+    case archive = "archive"
     var id: String { rawValue }
+    var displayName: String {
+        switch self {
+        case .all: return L10n.string("library.allNotes")
+        case .archive: return L10n.string("library.archive")
+        }
+    }
 }
 
 final class LibraryModel: ObservableObject {
@@ -102,7 +108,7 @@ struct LibraryView: View {
     private var sidebar: some View {
         VStack(spacing: 0) {
             Picker("", selection: $model.mode) {
-                ForEach(LibraryMode.allCases) { Text($0.rawValue).tag($0) }
+                ForEach(LibraryMode.allCases) { Text($0.displayName).tag($0) }
             }
             .pickerStyle(.segmented)
             .labelsHidden()
@@ -149,27 +155,27 @@ struct LibraryView: View {
             Divider()
             HStack(spacing: 12) {
                 Button { NoteStore.shared.create() } label: {
-                    Label("New Note", systemImage: "plus").font(.system(size: 11.5))
+                    Label(L10n.string("library.newNote"), systemImage: "plus").font(.system(size: 11.5))
                 }
                 .buttonStyle(.plain).foregroundStyle(.secondary)
 
                 Menu {
-                    Button("Markdown — one file per note…") {
+                    Button(L10n.string("library.export.markdown")) {
                         Transfer.export(.markdown, notes: NoteStore.shared.notes)
                     }
-                    Button("Plain text — one file per note…") {
+                    Button(L10n.string("library.export.plainText")) {
                         Transfer.export(.plainText, notes: NoteStore.shared.notes)
                     }
-                    Button("Single document…") {
+                    Button(L10n.string("library.export.singleFile")) {
                         Transfer.export(.singleFile, notes: NoteStore.shared.notes)
                     }
-                    Button("Sticky archive (.stickies)…") {
+                    Button(L10n.string("library.export.stickies")) {
                         Transfer.export(.stickies, notes: NoteStore.shared.notes)
                     }
                     Divider()
-                    Button("Import…") { Transfer.importFiles() }
+                    Button(L10n.string("library.import")) { Transfer.importFiles() }
                 } label: {
-                    Label("Export", systemImage: "square.and.arrow.up").font(.system(size: 11.5))
+                    Label(L10n.string("library.export"), systemImage: "square.and.arrow.up").font(.system(size: 11.5))
                 }
                 .menuStyle(.borderlessButton)
                 .foregroundStyle(.secondary)

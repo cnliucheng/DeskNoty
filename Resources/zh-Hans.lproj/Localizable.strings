@@ -181,9 +181,15 @@
 "library.noMatches" = "没有匹配项";
 "library.search.placeholder" = "搜索所有便签";
 "library.selectNote" = "选择一个便签";
+"library.newNote" = "新建便签";
+"library.export" = "导出";
+"library.export.markdown" = "Markdown — 每个便签一个文件…";
+"library.export.plainText" = "纯文本 — 每个便签一个文件…";
+"library.export.singleFile" = "单个文档…";
+"library.export.stickies" = "便签存档 (.stickies)…";
+"library.import" = "导入…";
 "library.restore" = "恢复";
 "library.delete" = "删除";
-"library.export" = "导出";
 
 /* MARK: - Export/Import */
 "export.success" = "已导出 %d 个便签";

@@ -207,7 +207,7 @@ enum Transfer {
             try s.write(to: url, atomically: true, encoding: .utf8)
             reveal(url)
         } catch {
-            alert("Export failed", error.localizedDescription)
+            alert(L10n.string("export.failed"), error.localizedDescription)
         }
     }
 
