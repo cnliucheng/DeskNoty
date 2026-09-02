@@ -1,191 +1,86 @@
-name: Release
+name: Build and Release
 
 on:
-  # Merging dev into main is the release button. Documentation, the site and the
-  # appcast the job writes back never cut a release on their own.
-  #
-  # One `push` block cannot filter paths for branches without filtering them for
-  # tags too, and the path filter is the whole point — a README push to main must
-  # not cut a release. So the tag trigger is gone; workflow_dispatch with a
-  # version is the manual path, and it does not need a tag pushed first.
   push:
-    branches: [main]
-    paths-ignore:
-      - 'appcast.xml'
-      - 'site/**'
-      - 'media/**'
-      - 'screenshots/**'
-      - '**/*.md'
-      - 'LICENSE'
-      - 'licenses/**'
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to release, e.g. 1.0.1'
-        required: true
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
 
 permissions:
   contents: write
 
-# Two merges landing close together would otherwise compute the same version and
-# race each other to the same tag.
-concurrency:
-  group: release
-  cancel-in-progress: false
-
 jobs:
-  release:
-    runs-on: macos-15
+  build:
+    runs-on: macos-latest
+    
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: main
-          fetch-depth: 0
-
-      - name: Work out the version
-        id: v
-        # Nothing from the event reaches the shell as ${{ }}: a dispatch input is
-        # attacker-controlled text, and interpolating it here would run it.
-        env:
-          EVENT_NAME: ${{ github.event_name }}
-          INPUT_VERSION: ${{ inputs.version }}
-          REF_NAME: ${{ github.ref_name }}
-          REF_TYPE: ${{ github.ref_type }}
-        run: |
-          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
-            VERSION="$INPUT_VERSION"
-          elif [ "$REF_TYPE" = "tag" ]; then
-            VERSION="${REF_NAME#v}"
-          else
-            # A merge into main. The commit message decides the version when it
-            # says so — "release: 1.2.0" — and otherwise the patch is bumped,
-            # because most merges are fixes and a release should never need a
-            # second step to happen.
-            SUBJECT="$(git log -1 --pretty=%B)"
-            ASKED="$(printf '%s' "$SUBJECT" \
-                     | sed -nE 's/.*[Rr]elease:[[:space:]]*([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' \
-                     | head -1)"
-            if [ -n "$ASKED" ]; then
-              VERSION="$ASKED"
-            else
-              LAST="$(git tag --list 'v*' --sort=-v:refname | head -1)"
-              LAST="${LAST#v}"
-              LAST="${LAST:-0.0.0}"
-              MAJOR="${LAST%%.*}"; REST="${LAST#*.}"
-              MINOR="${REST%%.*}"; PATCH="${REST#*.}"
-              VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
-            fi
-          fi
-          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::version must be numeric SemVer (X.Y.Z)"
-            exit 1
-          fi
-          if git rev-parse -q --verify "refs/tags/v${VERSION}" >/dev/null; then
-            echo "::notice::v${VERSION} is already tagged — nothing to release"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-          fi
-          {
-            echo "version=$VERSION"
-            echo "tag=v$VERSION"
-            # a monotonic build number Sparkle can compare
-            echo "build=$(git rev-list --count HEAD)"
-          } >> "$GITHUB_OUTPUT"
-          echo "releasing ${VERSION}"
-
-      - name: Write the release notes
-        if: steps.v.outputs.skip != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.v.outputs.version }}
-        run: ./scripts/make-release-notes.sh
-
-      - name: Fetch Sparkle
-        if: steps.v.outputs.skip != 'true'
-        run: ./scripts/fetch-sparkle.sh
-
-      - name: Build
-        if: steps.v.outputs.skip != 'true'
-        env:
-          MARKETING_VERSION: ${{ steps.v.outputs.version }}
-          BUILD_NUMBER: ${{ steps.v.outputs.build }}
-        run: |
-          ./build.sh release
-          codesign --verify --deep --strict build/Noty.app
-
-      - name: Package the disk image
-        if: steps.v.outputs.skip != 'true'
-        env:
-          VERSION: ${{ steps.v.outputs.version }}
-        run: ./scripts/make-dmg.sh "$VERSION"
-
-      - name: Sign the update and write the appcast
-        if: steps.v.outputs.skip != 'true'
-        env:
-          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
-          VERSION: ${{ steps.v.outputs.version }}
-          BUILD: ${{ steps.v.outputs.build }}
-          TAG: ${{ steps.v.outputs.tag }}
-        run: |
-          if [ -z "$SPARKLE_PRIVATE_KEY" ]; then
-            echo "::error::SPARKLE_PRIVATE_KEY secret is not set — updates cannot be signed."
-            exit 1
-          fi
-          KEYFILE="$(mktemp)"
-          printf '%s' "$SPARKLE_PRIVATE_KEY" > "$KEYFILE"
-          echo "key bytes: $(wc -c < "$KEYFILE")"
-          test -x ./Sparkle/bin/sign_update
-          NOTES="$(cat build/release-notes.html)" \
-          ./scripts/make-appcast.sh \
-            "build/Noty-${VERSION}.dmg" \
-            "$KEYFILE" \
-            "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/Noty-${VERSION}.dmg"
-          rm -f "$KEYFILE"
-
-      - name: Publish the release
-        if: steps.v.outputs.skip != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ steps.v.outputs.version }}
-          TAG: ${{ steps.v.outputs.tag }}
-        run: |
-          V="$VERSION"
-          # A stable filename as well, so the website's download link never has to
-          # be edited. Sparkle keeps using the versioned one named in the appcast.
-          cp "build/Noty-${V}.dmg" build/Noty.dmg
-          # --target pins the tag to the commit this job built, not to whatever
-          # main has drifted to while it ran.
-          gh release create "$TAG" \
-            "build/Noty-${V}.dmg" build/Noty.dmg \
-            --title "Noty ${V}" \
-            --target "$GITHUB_SHA" \
-            --notes-file build/release-notes.md \
-            --latest || \
-          gh release upload "$TAG" \
-            "build/Noty-${V}.dmg" build/Noty.dmg --clobber
-
-      - name: Commit the appcast so Sparkle can see the update
-        if: steps.v.outputs.skip != 'true'
-        env:
-          VERSION: ${{ steps.v.outputs.version }}
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add appcast.xml
-          if git diff --cached --quiet; then
-            echo "appcast unchanged"
-            exit 0
-          fi
-          git commit -m "Release ${VERSION}: update appcast"
-          # main can move between this job's checkout and its push — a docs commit
-          # is enough to lose the race, and the release then ships without a feed.
-          for attempt in 1 2 3 4 5; do
-            if git push origin HEAD:main; then
-              echo "appcast published on attempt $attempt"
-              exit 0
-            fi
-            echo "push rejected, rebasing and retrying"
-            git pull --rebase origin main
-            sleep 3
-          done
-          echo "::error::could not publish the appcast after 5 attempts"
-          exit 1
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set version from tag
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        VERSION="${GITHUB_REF#refs/tags/v}"
+        echo "MARKETING_VERSION=$VERSION" >> $GITHUB_ENV
+        echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+        
+    - name: Set default version
+      if: !startsWith(github.ref, 'refs/tags/v')
+      run: |
+        echo "MARKETING_VERSION=1.0.0" >> $GITHUB_ENV
+        echo "BUILD_NUMBER=${{ github.run_number }}" >> $GITHUB_ENV
+        
+    - name: Build Noty.app
+      run: |
+        chmod +x build.sh
+        ./build.sh release
+        
+    - name: Create DMG
+      run: |
+        # Create a temporary directory for DMG contents
+        mkdir -p dmg_temp
+        cp -R build/Noty.app dmg_temp/
+        
+        # Create symbolic link to Applications folder
+        ln -s /Applications dmg_temp/Applications
+        
+        # Create DMG
+        hdiutil create -volname "Noty" \
+          -srcfolder dmg_temp \
+          -ov \
+          -format UDZO \
+          "Noty-${MARKETING_VERSION}.dmg"
+          
+        # Clean up
+        rm -rf dmg_temp
+        
+    - name: Upload DMG artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Noty-${{ env.MARKETING_VERSION }}
+        path: Noty-${{ env.MARKETING_VERSION }}.dmg
+        
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: Noty-${{ env.MARKETING_VERSION }}.dmg
+        generate_release_notes: true
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Upload to Release (non-tag)
+      if: !startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ env.MARKETING_VERSION }}
+        name: "Development Build ${{ env.MARKETING_VERSION }}"
+        files: Noty-${{ env.MARKETING_VERSION }}.dmg
+        generate_release_notes: true
+        draft: true
+        prerelease: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

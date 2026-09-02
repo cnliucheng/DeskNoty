@@ -347,6 +347,62 @@ Four details worth knowing if you touch the deck:
 
 Set `NOTY_DEBUG_DECK=1` in the environment to trace deck state transitions on stderr.
 
+## Automatic Builds
+
+Noty uses **GitHub Actions** to automatically build and release the app:
+
+### How it works
+
+1. **Push to main** → Creates a draft development release
+2. **Create a version tag** (e.g., `v1.0.0`) → Creates a production release
+3. **Pull requests** → Builds but doesn't create a release
+
+### Creating a release
+
+```bash
+# Create and push a version tag
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The GitHub Action will automatically:
+- Build Noty.app for macOS (ARM64)
+- Create a DMG installer file
+- Create a GitHub Release with the DMG attached
+
+### Downloading releases
+
+Visit the [Releases page](https://github.com/cnliucheng/DeskNoty/releases) to download the latest DMG file.
+
+---
+
+## 自动构建
+
+Noty 使用 **GitHub Actions** 自动构建和发布应用：
+
+### 工作原理
+
+1. **推送到 main 分支** → 创建草稿开发版本
+2. **创建版本标签**（如 `v1.0.0`）→ 创建正式发布版本
+3. **拉取请求** → 仅构建，不创建发布
+
+### 创建发布版本
+
+```bash
+# 创建并推送版本标签
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+GitHub Action 会自动：
+- 构建 macOS 版本的 Noty.app (ARM64)
+- 创建 DMG 安装文件
+- 创建 GitHub Release 并附加 DMG 文件
+
+### 下载发布版本
+
+访问 [Releases 页面](https://github.com/cnliucheng/DeskNoty/releases) 下载最新的 DMG 文件。
+
 ## Differences from the original
 
 - **Not sandboxed**, so data lives in `~/Library/Application Support/Noty/`
