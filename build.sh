@@ -36,12 +36,12 @@ fi
 
 echo "→ compiling ($MODE) $MARKETING_VERSION ($BUILD_NUMBER)"
 
-# Detect architecture
+# Detect architecture and set compatible target
 ARCH=$(uname -m)
 if [ "$ARCH" = "arm64" ]; then
-    TARGET="arm64-apple-macosx15.0"
+    TARGET="arm64-apple-macosx13.0"
 else
-    TARGET="x86_64-apple-macosx15.0"
+    TARGET="x86_64-apple-macosx13.0"
 fi
 
 swiftc $OPT -parse-as-library -swift-version 5 \
