@@ -3,10 +3,12 @@ import SwiftUI
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var deckManager: DeckManager!
+    private var statusItem: NSStatusItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         buildMainMenu()
+        setupStatusItem()
 
         deckManager = DeckManager()
         UndoToast.shared.start()
@@ -206,5 +208,172 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         main.addItem(editItem)
 
         NSApp.mainMenu = main
+    }
+
+    // MARK: Status Bar Item
+
+    private func setupStatusItem() {
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        
+        if let button = statusItem?.button {
+            // Use SF Symbol for the status bar icon
+            let image = NSImage(systemSymbolName: "note.text", accessibilityDescription: "Noty")
+            image?.isTemplate = true // Support dark/light mode
+            button.image = image
+            button.toolTip = L10n.string("statusItem.tooltip")
+            button.action = #selector(statusItemClicked(_:))
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
+        }
+    }
+
+    @objc private func statusItemClicked(_ sender: NSStatusBarButton) {
+        guard let event = NSApp.currentEvent else { return }
+        
+        if event.type == .rightMouseUp {
+            showStatusMenu()
+        } else {
+            // Left click: open All Notes window
+            openAllNotes()
+        }
+    }
+
+    private func showStatusMenu() {
+        let menu = NSMenu()
+        
+        // Add the same items as the deck context menu
+        menu.addItem(withTitle: L10n.string("context.newNote"), action: #selector(newNote), keyEquivalent: "")
+        menu.addItem(withTitle: L10n.string("context.allNotes"), action: #selector(openAllNotes), keyEquivalent: "")
+        menu.addItem(withTitle: L10n.string("context.archive"), action: #selector(openArchive), keyEquivalent: "")
+        menu.addItem(.separator())
+        
+        let overFS = NSMenuItem(title: L10n.string("context.showOverFullScreen"),
+                                action: #selector(toggleOverFullScreen), keyEquivalent: "")
+        overFS.state = Settings.showOverFullScreen ? .on : .off
+        menu.addItem(overFS)
+        
+        let styleItem = NSMenuItem(title: L10n.string("context.deckStyle"), action: nil, keyEquivalent: "")
+        let styleMenu = NSMenu()
+        for s in DeckStyle.allCases {
+            let it = NSMenuItem(title: s.title, action: #selector(setDeckStyle(_:)), keyEquivalent: "")
+            it.representedObject = s.rawValue
+            it.state = Settings.deckStyle == s ? .on : .off
+            styleMenu.addItem(it)
+        }
+        styleItem.submenu = styleMenu
+        menu.addItem(styleItem)
+        
+        let fontItem = NSMenuItem(title: L10n.string("context.noteFont"), action: nil, keyEquivalent: "")
+        let fontMenu = NSMenu()
+        for f in Ink.faces {
+            let it = NSMenuItem(title: f.name, action: #selector(setNoteFont(_:)), keyEquivalent: "")
+            it.representedObject = f.body
+            it.state = Ink.face.body == f.body ? .on : .off
+            fontMenu.addItem(it)
+        }
+        fontItem.submenu = fontMenu
+        menu.addItem(fontItem)
+        
+        let textItem = NSMenuItem(title: L10n.string("context.textSize"), action: nil, keyEquivalent: "")
+        let textMenu = NSMenu()
+        for entry in Settings.fontSizes {
+            let it = NSMenuItem(title: entry.name, action: #selector(setFontSize(_:)), keyEquivalent: "")
+            it.representedObject = entry.size
+            it.state = abs(Settings.noteFontSize - entry.size) < 0.01 ? .on : .off
+            textMenu.addItem(it)
+        }
+        textItem.submenu = textMenu
+        menu.addItem(textItem)
+        
+        let sizeItem = NSMenuItem(title: L10n.string("context.deckSize"), action: nil, keyEquivalent: "")
+        let sizeMenu = NSMenu()
+        for entry in Settings.deckSizes {
+            let it = NSMenuItem(title: entry.name, action: #selector(setDeckScale(_:)), keyEquivalent: "")
+            it.representedObject = entry.scale
+            it.state = abs(Settings.deckScale - entry.scale) < 0.01 ? .on : .off
+            sizeMenu.addItem(it)
+        }
+        sizeItem.submenu = sizeMenu
+        menu.addItem(sizeItem)
+        
+        let keepOpen = NSMenuItem(title: L10n.string("context.keepDeckOpen"),
+                                  action: #selector(toggleDeckAlwaysShown), keyEquivalent: "")
+        keepOpen.state = Settings.deckAlwaysShown ? .on : .off
+        menu.addItem(keepOpen)
+        
+        let leftEdge = NSMenuItem(title: L10n.string("context.dockToLeft"),
+                                  action: #selector(toggleDeckEdge), keyEquivalent: "")
+        leftEdge.state = Settings.deckOnLeftEdge ? .on : .off
+        menu.addItem(leftEdge)
+        
+        if NSScreen.screens.count > 1 {
+            let displayItem = NSMenuItem(title: L10n.string("context.display"), action: nil, keyEquivalent: "")
+            let displayMenu = NSMenu()
+            
+            let allItem = NSMenuItem(title: L10n.string("context.display.all"), action: #selector(setDisplayTarget(_:)), keyEquivalent: "")
+            allItem.representedObject = "all"
+            allItem.state = Settings.displayTarget == "all" ? .on : .off
+            displayMenu.addItem(allItem)
+            
+            let mainItem = NSMenuItem(title: L10n.string("context.display.main"), action: #selector(setDisplayTarget(_:)), keyEquivalent: "")
+            mainItem.representedObject = "main"
+            mainItem.state = Settings.displayTarget == "main" ? .on : .off
+            displayMenu.addItem(mainItem)
+            
+            displayMenu.addItem(.separator())
+            
+            for screen in NSScreen.screens {
+                guard let id = (screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber)?.uint32Value else { continue }
+                let name = screen.localizedName
+                let title = screen == NSScreen.main ? "\(name) (Main)" : name
+                let it = NSMenuItem(title: title, action: #selector(setDisplayTarget(_:)), keyEquivalent: "")
+                it.representedObject = "id:\(id)"
+                it.state = Settings.displayTarget == "id:\(id)" ? .on : .off
+                displayMenu.addItem(it)
+            }
+            displayItem.submenu = displayMenu
+            menu.addItem(displayItem)
+        }
+        
+        let updates = NSMenuItem(title: L10n.string("context.checkUpdates"),
+                                 action: #selector(checkForUpdates), keyEquivalent: "")
+        menu.addItem(updates)
+        
+        let autoUpdate = NSMenuItem(title: L10n.string("context.checkAutomatically"),
+                                    action: #selector(toggleAutoUpdates), keyEquivalent: "")
+        autoUpdate.state = Updater.shared.automaticallyChecks ? .on : .off
+        autoUpdate.isEnabled = Updater.available
+        menu.addItem(autoUpdate)
+        menu.addItem(.separator())
+        
+        let login = NSMenuItem(title: L10n.string("context.launchAtLogin"),
+                               action: #selector(toggleLaunchAtLogin), keyEquivalent: "")
+        login.state = Settings.launchAtLogin ? .on : .off
+        menu.addItem(login)
+        menu.addItem(.separator())
+        
+        let exportItem = NSMenuItem(title: L10n.string("context.export"), action: nil, keyEquivalent: "")
+        let exportMenu = NSMenu()
+        exportMenu.addItem(withTitle: L10n.string("context.export.markdown"),
+                           action: #selector(exportMarkdown), keyEquivalent: "")
+        exportMenu.addItem(withTitle: L10n.string("context.export.plainText"),
+                           action: #selector(exportPlainText), keyEquivalent: "")
+        exportMenu.addItem(withTitle: L10n.string("context.export.singleFile"),
+                           action: #selector(exportSingleFile), keyEquivalent: "")
+        exportMenu.addItem(withTitle: L10n.string("context.export.stickies"),
+                           action: #selector(exportStickies), keyEquivalent: "")
+        exportItem.submenu = exportMenu
+        menu.addItem(exportItem)
+        menu.addItem(withTitle: L10n.string("context.import"), action: #selector(importStickies), keyEquivalent: "")
+        menu.addItem(.separator())
+        menu.addItem(withTitle: L10n.string("context.settings"), action: #selector(openSettings), keyEquivalent: "")
+        menu.addItem(withTitle: L10n.string("context.quit"), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
+        
+        // Set target for all menu items
+        for item in menu.items where item.action != nil {
+            item.target = self
+        }
+        
+        statusItem?.menu = menu
+        statusItem?.button?.performClick(nil)
     }
 }

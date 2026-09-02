@@ -52,6 +52,7 @@
 "context.import" = "导入…";
 "context.settings" = "设置…";
 "context.quit" = "退出 Noty";
+"statusItem.tooltip" = "Noty - 左键点击打开所有便签，右键点击显示菜单";
 "context.pin" = "固定";
 "context.unpin" = "取消固定";
 "context.delete" = "删除";

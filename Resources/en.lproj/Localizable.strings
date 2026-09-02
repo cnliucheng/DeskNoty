@@ -52,6 +52,7 @@
 "context.import" = "Import…";
 "context.settings" = "Settings…";
 "context.quit" = "Quit Noty";
+"statusItem.tooltip" = "Noty - Click to open All Notes, Right-click for menu";
 "context.pin" = "Pin";
 "context.unpin" = "Unpin";
 "context.delete" = "Delete";
