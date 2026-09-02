@@ -35,8 +35,17 @@ else
 fi
 
 echo "→ compiling ($MODE) $MARKETING_VERSION ($BUILD_NUMBER)"
+
+# Detect architecture
+ARCH=$(uname -m)
+if [ "$ARCH" = "arm64" ]; then
+    TARGET="arm64-apple-macosx15.0"
+else
+    TARGET="x86_64-apple-macosx15.0"
+fi
+
 swiftc $OPT -parse-as-library -swift-version 5 \
-    -target arm64-apple-macosx15.0 \
+    -target $TARGET \
     -sdk "$SDK" \
     "${SPARKLE_FLAGS[@]+"${SPARKLE_FLAGS[@]}"}" \
     "$ROOT"/Sources/*.swift \

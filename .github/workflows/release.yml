@@ -34,6 +34,8 @@ jobs:
     - name: Build Noty.app
       run: |
         chmod +x build.sh
+        echo "Architecture: $(uname -m)"
+        echo "Xcode version: $(xcodebuild -version)"
         ./build.sh release
         
     - name: Create DMG
